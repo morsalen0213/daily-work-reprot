@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2nur Digital Agency Daily Report</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel controls" aria-label="Report controls">
+        <div class="brand-row">
+          <div>
+            <p class="eyebrow">Daily PDF Report</p>
+            <h1>2nur Digital Agency</h1>
+          </div>
+          <button class="icon-button" id="clearAllBtn" type="button" title="Reset all saved data" aria-label="Reset all saved data">
+            <span aria-hidden="true">Reset</span>
+          </button>
+        </div>
+
+        <div class="actions top-actions">
+          <button class="primary-button download" id="downloadBtn" type="button">Download PDF</button>
+          <p id="statusText" class="status" role="status"></p>
+        </div>
+
+        <form id="itemForm" class="item-form">
+          <div class="form-title">Add Work Item</div>
+          <label>
+            <span>Category</span>
+            <input id="categoryInput" type="text" placeholder="SEO, Design, Website..." required list="categorySuggestions">
+            <datalist id="categorySuggestions">
+              <option value="Youtube Post"></option>
+              <option value="Instagram Post"></option>
+              <option value="FaceBook Post"></option>
+              <option value="X post"></option>
+              <option value="2nur.com post"></option>
+            </datalist>
+          </label>
+          <label>
+            <span>Keyword</span>
+            <input id="nameInput" type="text" placeholder="Keyword or task name" required>
+          </label>
+          <label>
+            <span>Link</span>
+            <input id="linkInput" type="url" placeholder="https://example.com">
+          </label>
+          <button class="primary-button" type="submit">Add Item</button>
+        </form>
+
+        <form id="profileForm" class="grid-form profile-form">
+          <label>
+            <span>Name</span>
+            <input id="personName" type="text" placeholder="Enter name" autocomplete="name" list="personSuggestions">
+            <datalist id="personSuggestions">
+              <option value="Apple Mahmud"></option>
+              <option value="Sujon Islam"></option>
+            </datalist>
+          </label>
+          <label>
+            <span>Designation</span>
+            <input id="designation" type="text" placeholder="Enter designation" list="designationSuggestions">
+            <datalist id="designationSuggestions">
+              <option value="Junior Graphic Designer"></option>
+              <option value="Senior Graphic Designer"></option>
+            </datalist>
+          </label>
+        </form>
+
+      </section>
+
+      <section class="preview-wrap" aria-label="PDF preview">
+        <div class="page-actions">
+          <span id="itemCount">0 items</span>
+        </div>
+
+        <article class="a4-page" id="reportPage">
+          <header class="report-header">
+            <h2>2nur Digital Agency</h2>
+            <p>2nur.com</p>
+          </header>
+
+          <section class="meta-grid" aria-label="Report information">
+            <div>
+              <span>Date</span>
+              <strong id="previewDate"></strong>
+            </div>
+            <div>
+              <span>Name</span>
+              <strong id="previewName"></strong>
+            </div>
+            <div>
+              <span>Designation</span>
+              <strong id="previewDesignation"></strong>
+            </div>
+          </section>
+
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th class="serial-col"><span class="serial-label">Serial</span></th>
+                <th class="category-col">Category</th>
+                <th>Link</th>
+                <th>Keyword</th>
+                <th class="screen-only action-col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="reportRows">
+              <tr class="empty-row">
+                <td colspan="5">No work items added yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+      <span class="creator-credit">System created by Apple</span>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
