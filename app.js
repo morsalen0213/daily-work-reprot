@@ -431,7 +431,7 @@
     }
 
     function addRotatedCenteredText(text, centerX, centerY, size, bold) {
-      const angle = Math.PI / 4;
+      const angle = -Math.PI / 4;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
       const textWidth = String(text).length * size * 0.48;
