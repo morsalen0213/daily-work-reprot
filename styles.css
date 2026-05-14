@@ -297,7 +297,7 @@ button {
   display: inline-block;
   font-size: 10px;
   line-height: 1;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   transform-origin: center;
   white-space: nowrap;
 }
@@ -335,8 +335,12 @@ button {
 }
 
 .link-cell a {
+  display: block;
+  max-width: 100%;
   color: #0645ad;
   text-decoration: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 @media (max-width: 1040px) {

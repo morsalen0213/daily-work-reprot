@@ -306,7 +306,7 @@
         const values = [String(serial++), item.link || "-", item.name];
         const wrapped = [
           wrapText(values[0], columns[0].width - 8, 9),
-          wrapText(values[1], columns[2].width - 12, 9),
+          wrapText(values[1], columns[2].width - 14, 9),
           wrapText(values[2], columns[3].width - 12, 9)
         ];
         const rowHeight = Math.max(26, Math.max(...wrapped.map((lines) => lines.length)) * 12 + 12);
@@ -410,7 +410,7 @@
 
         addCenteredText(row.wrapped[0][0], serialX + columns[0].width / 2, rowY - row.rowHeight / 2 - 3, 9, true);
         row.wrapped[1].forEach((line, lineIndex) => {
-          addText(line, linkX + 6, rowY - 15 - lineIndex * 12, 9);
+          addText(line, linkX + 6, rowY - 15 - lineIndex * 12, 9, false, false, "link");
         });
         row.wrapped[2].forEach((line, lineIndex) => {
           addText(line, keywordX + 6, rowY - 15 - lineIndex * 12, 9);
@@ -420,8 +420,9 @@
       });
     }
 
-    function addText(text, x, textY, size, bold, white) {
-      stream += `BT /${bold ? "F2" : "F1"} ${size} Tf ${white ? "1 1 1" : "0 0 0"} rg ${x} ${textY} Td (${escapePdfText(text)}) Tj ET\n`;
+    function addText(text, x, textY, size, bold, white, color) {
+      const fill = white ? "1 1 1" : color === "link" ? "0.02 0.27 0.68" : "0 0 0";
+      stream += `BT /${bold ? "F2" : "F1"} ${size} Tf ${fill} rg ${x} ${textY} Td (${escapePdfText(text)}) Tj ET\n`;
     }
 
     function addCenteredText(text, x, textY, size, bold, white) {
@@ -430,7 +431,7 @@
     }
 
     function addRotatedCenteredText(text, centerX, centerY, size, bold) {
-      const angle = -Math.PI / 4;
+      const angle = Math.PI / 4;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
       const textWidth = String(text).length * size * 0.48;
@@ -488,15 +489,14 @@
   }
 
   function wrapText(value, width, fontSize) {
-    const maxChars = Math.max(4, Math.floor(width / (fontSize * 0.48)));
     const words = String(value || "-").split(/\s+/);
     const lines = [];
     let line = "";
 
     words.forEach((word) => {
-      splitLongWord(word, maxChars).forEach((chunk) => {
+      splitLongWord(word, width, fontSize).forEach((chunk) => {
         const candidate = line ? `${line} ${chunk}` : chunk;
-        if (candidate.length > maxChars && line) {
+        if (getTextWidth(candidate, fontSize) > width && line) {
           lines.push(line);
           line = chunk;
         } else {
@@ -509,12 +509,31 @@
     return lines.length ? lines : ["-"];
   }
 
-  function splitLongWord(word, maxChars) {
+  function splitLongWord(word, width, fontSize) {
     const chunks = [];
-    for (let index = 0; index < word.length; index += maxChars) {
-      chunks.push(word.slice(index, index + maxChars));
+    let chunk = "";
+
+    for (const character of String(word)) {
+      const candidate = `${chunk}${character}`;
+      if (chunk && getTextWidth(candidate, fontSize) > width) {
+        chunks.push(chunk);
+        chunk = character;
+      } else {
+        chunk = candidate;
+      }
     }
+
+    if (chunk) chunks.push(chunk);
     return chunks;
+  }
+
+  function getTextWidth(value, fontSize) {
+    return Array.from(String(value)).reduce((total, character) => {
+      if (character === " ") return total + fontSize * 0.28;
+      if ("ilI.,:;|'![]()".includes(character)) return total + fontSize * 0.25;
+      if ("mwMW@#%&".includes(character)) return total + fontSize * 0.72;
+      return total + fontSize * 0.52;
+    }, 0);
   }
 
   function escapePdfText(value) {
