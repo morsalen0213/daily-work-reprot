@@ -20,12 +20,19 @@
         </div>
 
         <div class="actions top-actions">
-          <button class="primary-button download" id="downloadBtn" type="button">Download PDF</button>
+          <div class="download-row">
+            <button class="primary-button download" id="downloadBtn" type="button">Download PDF</button>
+            <button class="secondary-button" id="printBtn" type="button" title="Print or Save as PDF via Browser">Print</button>
+          </div>
+          <label class="checkbox-label">
+            <input id="autoResetToggle" type="checkbox">
+            <span>Auto-reset report after PDF download</span>
+          </label>
           <p id="statusText" class="status" role="status"></p>
         </div>
 
         <form id="itemForm" class="item-form">
-          <div class="form-title">Add Work Item</div>
+          <div class="form-title" id="formTitle">Add Work Item</div>
           <label>
             <span>Category</span>
             <input id="categoryInput" type="text" placeholder="SEO, Design, Website..." required list="categorySuggestions">
@@ -43,12 +50,19 @@
           </label>
           <label>
             <span>Link</span>
-            <input id="linkInput" type="url" placeholder="https://example.com">
+            <input id="linkInput" type="text" placeholder="https://example.com">
           </label>
-          <button class="primary-button" type="submit">Add Item</button>
+          <div class="form-buttons">
+            <button class="primary-button" id="submitItemBtn" type="submit">Add Item</button>
+            <button class="secondary-button hidden" id="cancelEditBtn" type="button">Cancel</button>
+          </div>
         </form>
 
         <form id="profileForm" class="grid-form profile-form">
+          <label>
+            <span>Report Date</span>
+            <input id="reportDate" type="date">
+          </label>
           <label>
             <span>Name</span>
             <input id="personName" type="text" placeholder="Enter name" autocomplete="name" list="personSuggestions">
@@ -66,7 +80,6 @@
             </datalist>
           </label>
         </form>
-
       </section>
 
       <section class="preview-wrap" aria-label="PDF preview">
